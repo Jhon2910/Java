@@ -1,4 +1,4 @@
-import java.io.*;
+import java.io.*; //Permite usar classes de entrada e saída de arquivos
 
 public class ConversorMIPS {
 
@@ -16,14 +16,15 @@ public class ConversorMIPS {
             String entrada = "TESTE-" + numero + ".txt";
             String saida = "TESTE-" + numero + "-RESULTADO.txt";
 
-            File f = new File(entrada);
+            File f = new File(entrada); //Cria um objeto que representa um arquivo
 
             if (!f.exists()) {
                 System.out.println("Arquivo nao encontrado: " + entrada);
             } else {
 
-                BufferedReader br = new BufferedReader(new FileReader(entrada));
-                BufferedWriter bw = new BufferedWriter(new FileWriter(saida));
+                BufferedReader br = new BufferedReader(new FileReader(entrada)); //Abre um arquivo para leitura
+                BufferedWriter bw = new BufferedWriter(new FileWriter(saida)); //Abre um arquivo para escrita
+
 
                 String linha;
 
@@ -32,12 +33,13 @@ public class ConversorMIPS {
                     linha = linha.replace(",", "");
                     linha = linha.replace("(", " ");
                     linha = linha.replace(")", "");
-
+                    
                     String[] p = linha.split("\\s+");
+                    //Limpa e separa a linha para facilitar o processamento
 
                     String inst = p[0];
 
-                    String resultado = "";
+                    String resultado = "";//guaradar o binario final
 
                     // ----------------- Tipo R -------------------
                     // ADD
