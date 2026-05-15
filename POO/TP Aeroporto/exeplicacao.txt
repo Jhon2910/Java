@@ -1,0 +1,278 @@
+/*
+* Esse problema é uma simulação de controle de aeroporto, envolvendo:
+
+filas,
+prioridade,
+gerenciamento de recursos (pistas),
+e passagem de tempo.
+
+A ideia principal é representar o funcionamento do aeroporto “passo a passo”, onde cada passo corresponde a 1 unidade de tempo.
+
+1. Estrutura geral do aeroporto
+
+O aeroporto possui:
+
+Pistas
+Pista 1
+Pista 2
+Pista 3
+
+Cada pista pode fazer apenas:
+
+1 pouso
+ou
+1 decolagem
+
+por unidade de tempo.
+
+2. Filas existentes
+Filas de aterrissagem (pouso)
+
+Existem 4 “prateleiras” (filas de espera):
+
+duas associadas à pista 1
+duas associadas à pista 2
+
+Os aviões aguardam nessas filas até receber autorização para pousar.
+
+Cada avião recebe:
+
+um ID ímpar (1, 3, 5, 7…)
+uma quantidade de combustível restante (1 a 20)
+Filas de decolagem
+
+Existe:
+
+uma fila para cada pista
+
+Cada avião recebe:
+
+um ID par (2, 4, 6, 8…)
+3. Objetivo da simulação
+
+O programa deve:
+
+controlar as filas,
+evitar crescimento exagerado,
+decidir quem pousa e quem decola,
+priorizar emergências,
+calcular estatísticas.
+4. Como o tempo funciona
+
+A simulação ocorre em ciclos:
+
+Tempo 0
+Tempo 1
+Tempo 2
+Tempo 3
+...
+
+Em cada unidade de tempo acontecem várias etapas.
+
+5. Ordem dos acontecimentos em cada tempo
+Etapa 1 — Novos aviões chegam
+
+São gerados aleatoriamente:
+
+Para pouso
+
+De 0 a 3 aviões.
+
+Cada um recebe:
+
+ID ímpar
+combustível aleatório entre 1 e 20
+
+Esses aviões entram na menor fila de aterrissagem.
+
+A ideia é manter as filas equilibradas.
+
+Para decolagem
+
+Também chegam de 0 a 3 aviões.
+
+Eles entram na menor fila de decolagem.
+
+Recebem IDs pares.
+
+6. Atualização do combustível
+
+Depois da chegada:
+
+todos os aviões esperando para pousar perdem 1 unidade de combustível.
+
+Exemplo:
+
+Avião	Antes	Depois
+A1	5	4
+A3	2	1
+7. Verificação de emergência
+
+Agora o sistema verifica:
+
+Existe avião sem combustível?
+
+Ou seja:
+
+combustível == 0
+
+Esses aviões têm prioridade absoluta.
+
+8. Regras das pistas
+Situação normal
+
+A pista 3 normalmente é usada apenas para decolagem.
+
+As pistas 1 e 2 podem alternar entre:
+
+pousos
+decolagens
+
+dependendo da estratégia do algoritmo.
+
+Situação de emergência
+
+Se algum avião ficou sem combustível:
+
+a pista 3 deve imediatamente virar pista de pouso.
+
+Se houver:
+
+1 avião em emergência → ele pousa na pista 3
+2 ou 3 aviões em emergência → outras pistas também são usadas para pouso
+9. Estratégia inteligente do algoritmo
+
+O enunciado pede:
+
+“Tente projetar um algoritmo que não permita crescimento excessivo das filas”
+
+Então o programa deve tomar decisões inteligentes.
+
+Exemplos de estratégias
+Se as filas de pouso estão enormes
+
+Dar prioridade para aterrissagens.
+
+Se há aviões perto de ficar sem combustível
+
+Prioridade máxima para pouso.
+
+Se as filas de decolagem estão muito grandes
+
+Liberar mais decolagens.
+
+10. Estrutura ideal de dados
+
+Esse problema normalmente usa:
+
+Filas (Queue)
+
+Porque:
+
+quem entra primeiro sai primeiro (FIFO)
+
+Isso combina perfeitamente com:
+
+aviões esperando na ordem de chegada.
+11. O que armazenar em cada avião
+
+Cada avião pode ter:
+
+Informação	Exemplo
+ID	15
+tipo	pouso/decolagem
+combustível	7
+tempo de entrada	20
+12. Controle do tempo de espera
+
+Quando um avião:
+
+pousa
+ou
+decola
+
+o programa calcula:
+
+tempo atual - tempo de entrada
+
+Isso permite calcular:
+
+Média de espera para pouso
+
+e
+
+Média de espera para decolagem
+13. Aviões que pousaram sem combustível
+
+Sempre que:
+
+combustível == 0
+
+antes do pouso:
+
+incrementa um contador de emergência.
+14. O que imprimir
+
+Periodicamente o programa deve mostrar:
+
+Estado das filas
+
+Exemplo:
+
+Fila pouso 1: [A1(5), A3(2)]
+Fila pouso 2: [A5(8)]
+
+Fila decolagem 1: [D2, D4]
+Fila decolagem 2: [D6]
+Fila decolagem 3: []
+Operações realizadas
+
+Exemplo:
+
+Pista 1: pouso do avião A1
+Pista 2: decolagem do avião D2
+Pista 3: pouso emergencial do avião A3
+Estatísticas
+Tempo médio de pouso: 4.3
+Tempo médio de decolagem: 2.1
+Pousos sem combustível: 3
+15. Conceitos de programação envolvidos
+
+Esse exercício mistura vários tópicos importantes:
+
+filas (queue)
+simulação
+estruturas de dados
+geração aleatória
+controle de prioridade
+algoritmos de escalonamento
+estatística simples
+modelagem de sistemas reais
+16. Dificuldade real do problema
+
+A parte difícil não é a sintaxe.
+
+É:
+
+Modelar corretamente o comportamento do aeroporto.
+
+Principalmente:
+
+prioridades,
+emergências,
+balanceamento de filas,
+e decisões das pistas.
+17. Como pensar na solução
+
+A melhor forma é imaginar um “loop principal”:
+
+enquanto simulação estiver ativa:
+
+    chegam aviões
+    atualiza combustível
+    decide prioridades
+    usa pistas
+    atualiza estatísticas
+    imprime estado
+
+Esse é o coração da simulação. */
