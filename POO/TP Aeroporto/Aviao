@@ -1,22 +1,23 @@
-import java.util.Scanner;
-import java.util.LinkedList;
-import java.util.Queue;
+public class Aviao {
 
-public class Main {
-    public static void main(String[] args) {
+        int id;
+        String tipo;
+        int combustivel;
+        int tempoEntrada;
 
-        Pista pista1 = new Pista();
-        Pista pista2 = new Pista();
-        Pista pista3 = new Pista();
+        public Aviao(int id, String tipo, int combustivel, int tempoEntrada) {
+            this.id = id;
+            this.tipo = tipo;
+            this.combustivel = combustivel;
+            this.tempoEntrada = tempoEntrada;
+        }
 
+        @Override
+        public String toString() {
+            if (tipo.equals("POUSO")) {
+                return "A" + id + "(Comb: " + combustivel + ")";
+            }
+
+            return "D" + id;
+        }
     }
-}
-
-class Pista {
-    Queue<String> filaPouso = new LinkedList<>();
-    Queue<String> filaDecolagem = new LinkedList<>();
-
-    public Pista() {
-
-    }
-}
