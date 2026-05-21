@@ -1,3 +1,5 @@
+package com.mycompany.tp;
+
 public class Aviao {
 
         int id;
