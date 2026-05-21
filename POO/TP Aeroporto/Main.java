@@ -10,7 +10,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         Random random = new Random();
 
-        Queue<Aviao> filaPouso1 = new LinkedList<>(); //prateleiras
+        Queue<Aviao> filaPouso1 = new LinkedList<>(); // prateleiras
         Queue<Aviao> filaPouso2 = new LinkedList<>();
         Queue<Aviao> filaPouso3 = new LinkedList<>();
         Queue<Aviao> filaPouso4 = new LinkedList<>();
@@ -24,23 +24,12 @@ public class Main {
 
         int tempo = 0;
 
-        while (true) {
-            System.out.println("Digite o tempo que o aviao pode permanecer (de 1 a 20): ");
+        int entrada = random.nextInt(20 + 1);
 
-            if (!sc.hasNextInt()) {
-                System.out.println("Digite apenas numeros inteiros! ");
-                sc.next();
-            } else if (sc.nextInt() < 1 || sc.nextInt() > 20) {
-                System.out.println("Digite apenas numeros entre 1 e 20");
-                sc.next();
-            } else {
-                break;
-            }
-        }
 
-        int n = sc.nextInt();
+        //Pousos
 
-        while (tempo < n) {
+        while (tempo < entrada) {
 
             System.out.println("Tempo: " + tempo);
 
@@ -48,7 +37,7 @@ public class Main {
 
             for (int i = 0; i < novosPousos; i++) {
 
-                int combustivel = random.nextInt(n) + 1;
+                int combustivel = random.nextInt(entrada) + 1;
 
                 Aviao aviao = new Aviao(idPouso, "POUSO", combustivel, tempo);
 
@@ -74,39 +63,34 @@ public class Main {
             }
         }
 
-        while (tempo < n) {
+
+        //Decolagens
+       while (tempo < entrada) {
+    
+            int combustivel = random.nextInt(20) + 1; 
 
             System.out.println("Tempo: " + tempo);
 
-        }
+            int novasDecolagens = random.nextInt(4);
 
-        while (tempo < n) {
+            for (int j = 0; j < novasDecolagens; j++) {
 
-            System.out.println("Tempo: " + tempo);
+            Aviao aviao = new Aviao(idDecolagem, "Decolagem", combustivel, tempo);
+            idDecolagem += 2;
+        
+            Queue<Aviao> menorFila = filaDecolagem1;
 
-            int novasDecolagens = random.nextInt(4);// 0 a 3 aeronaves
-
-            for (int i = 0; i < novasDecolagens; i++) {
-
-                Aviao aviao = new Aviao(idDecolagem, "Decolagem", combustivel, tempo);
-
-                int idDecolagem +=2;
-
-                Queue<Aviao> menorFila = filaPouso1;
-
-                if (filaDecolagem2.size() < menorFila.size()) {
-                    menorFila = filaDecolagem2;
-                }
-
-                if (filaDecolagem3 < menorFila.size()) {
-                    menorFila = filaDecolagem3;
-                }
-
-                menorFila.add(aviao);
-
-                System.out.println("Novo avião decolando: " + aviao);
+            if (filaDecolagem2.size() < menorFila.size()) {
+            menorFila = filaDecolagem2;
             }
+
+            if (filaDecolagem3.size() < menorFila.size()) {
+            menorFila = filaDecolagem3;
+            }
+
+            menorFila.add(aviao);
+            }
+            tempo++; 
         }
     }
-
 }
