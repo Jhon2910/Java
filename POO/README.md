@@ -1,9 +1,3 @@
-### 📌 Instruções de Estilo:
-* Use **emojis** para deixar o visual atraente e amigável.
-* Organize tudo com **títulos (`#`, `##`, `###`)** claros e bem definidos.
-* Utilize tabelas, blocos de código e listas para facilitar a leitura.
-* Deixe marcadores como `[Seu Nome]` ou `[Linguagem]` para eu preencher depois.
-
 ### 📁 Pastas do meu Repositório:
 1. **Classes-&-Objects/Prog II** (Aulas e conceitos iniciais de Programação II sobre Classes e Objetos)
 2. **Stack-&-Queue** (Implementação e exercícios das estruturas de dados Pilha e Fila)
