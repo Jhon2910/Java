@@ -1,17 +1,20 @@
-Atue como um desenvolvedor experiente e crie um arquivo README.md completo e profissional para o GitHub com base nos dados abaixo. 
+### 📌 Instruções de Estilo:
+* Use **emojis** para deixar o visual atraente e amigável.
+* Organize tudo com **títulos (`#`, `##`, `###`)** claros e bem definidos.
+* Utilize tabelas, blocos de código e listas para facilitar a leitura.
+* Deixe marcadores como `[Seu Nome]` ou `[Linguagem]` para eu preencher depois.
 
-Use uma estrutura moderna com emojis, seções bem divididas e tabelas, se necessário. Deixe espaços com "Link" ou "Instruções" para eu preencher depois.
+### 📁 Pastas do meu Repositório:
+1. **Classes-&-Objects/Prog II** (Aulas e conceitos iniciais de Programação II sobre Classes e Objetos)
+2. **Stack-&-Queue** (Implementação e exercícios das estruturas de dados Pilha e Fila)
+3. **TP Aeroporto** (Trabalho Prático principal: desenvolvimento de um sistema/simulador de aeroporto)
 
-Aqui estão as pastas do meu projeto:
-1. Classes-&-Objects/Prog II (Aulas de Programação II sobre Classes e Objetos)
-2. Stack-&-Queue (Estruturas de dados de Pilha e Fila)
-3. TP Aeroporto (Trabalho Prático de um sistema de aeroporto)
+### 📋 Seções que o README deve ter:
+* **Título Principal** com um subtítulo chamativo.
+* **Descrição Geral** curta sobre o objetivo do repositório.
+* **Estrutura de Pastas** detalhada.
+* **Tecnologias Utilizadas** (deixe uma lista genérica para eu ajustar depois).
+* **Como Executar o Projeto** passo a passo.
+* **Seção de Contato/Autores**.
 
-Por favor, inclua as seguintes seções:
-- Nome do projeto e uma descrição geral curta
-- Estrutura de pastas explicada
-- Tecnologias e pré-requisitos (deixe genérico para eu ajustar a linguagem)
-- Como rodar o projeto localmente
-- Autores/Contato
-
-Gere apenas o código Markdown limpo.
+Gere apenas o código Markdown limpo e pronto para uso! 🚀
