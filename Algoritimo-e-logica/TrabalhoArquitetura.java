@@ -15,7 +15,7 @@ public class Main {
                 numero = "" + i;
 
             String entrada = "TESTE-" + numero + ".txt";
-            String saida = "TESTE-" + numero + "-RESULTADO.txt";
+            String saida   = "TESTE-" + numero + "-RESULTADO.txt";
 
             File arquivo = new File(entrada);
 
@@ -27,13 +27,10 @@ public class Main {
             ArrayList<String> instrucoes = new ArrayList<>();
 
             BufferedReader br = new BufferedReader(new FileReader(entrada));
-
             String linha;
 
             while ((linha = br.readLine()) != null) {
-
                 linha = linha.trim();
-
                 if (!linha.isEmpty()) {
                     instrucoes.add(linha);
                 }
@@ -44,110 +41,114 @@ public class Main {
             int ciclos = calcularCiclos(instrucoes);
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(saida));
-
             bw.write(String.valueOf(ciclos));
-
             bw.close();
 
             System.out.println(saida + " -> " + ciclos);
         }
     }
 
+    //------------------------------------------------------------------------
+    // Calcula o total de ciclos do pipeline.
+    // Base: N instruções = N + 4 ciclos (pipeline de 5 estágios).
+    // Para cada par consecutivo, verifica se há load-use hazard e soma +1 bolha se necessário.
+
+
     public static int calcularCiclos(ArrayList<String> instrucoes) {
 
         int ciclos = instrucoes.size() + 4;
 
         for (int i = 0; i < instrucoes.size() - 1; i++) {
-
-            String atual = instrucoes.get(i);
-            String proxima = instrucoes.get(i + 1);
-
-            ciclos += bolhas(atual, proxima);
+            ciclos += bolhas(instrucoes.get(i), instrucoes.get(i + 1));
         }
 
         return ciclos;
     }
 
-    // Retorna a lista de registradores FONTE lidos por uma instrução.
-    // Recebe o array de tokens já com vírgulas/parênteses removidos.
+    //------------------------------------------------------------------------
+    // Retorna os registradores FONTE (lidos) de uma instrução.
+    // Isso é necessário para não confundir o registrador de DESTINO com uma fonte.
+    // Exemplo: lw $t0 → add $t0, $s1, $s2
+    //          O $t0 do add é DESTINO, não está sendo lido → sem load-use hazard.
+
+
     public static List<String> fontes(String[] tokens) {
 
         List<String> resultado = new ArrayList<>();
-
         if (tokens.length == 0) return resultado;
 
         String op = tokens[0].toLowerCase();
 
         switch (op) {
 
-            // Tipo R: add/sub/and/or/xor $rd, $rs, $rt  -> fontes: tokens[2], tokens[3]
-            case "add":
-            case "sub":
-            case "and":
-            case "or":
-            case "xor":
-                if (tokens.length > 3) resultado.add(tokens[2]);
-                if (tokens.length > 3) resultado.add(tokens[3]);
+            // Tipo R: add/sub/and/or/xor  $rd, $rs, $rt
+            //         tokens:              [1]  [2]  [3]
+            // Fontes: $rs (tokens[2]) e $rt (tokens[3])
+            case "add": case "sub": case "and": case "or": case "xor":
+                if (tokens.length > 3) {
+                    resultado.add(tokens[2]);
+                    resultado.add(tokens[3]);
+                }
                 break;
 
-            // Shift: sll/srl $rd, $rt, sa  -> fonte: tokens[2] (sa é número)
-            case "sll":
-            case "srl":
+            // Shift: sll/srl  $rd, $rt, sa
+            //        tokens:   [1]  [2]  [3]
+            // Fonte: $rt (tokens[2]); sa é imediato numérico, não registrador
+            case "sll": case "srl":
                 if (tokens.length > 2) resultado.add(tokens[2]);
                 break;
 
-            // Tipo I aritmético/lógico: addi/andi/ori/xori $rt, $rs, imm -> fonte: tokens[2]
-            // lui $rt, imm -> sem registrador fonte (imediato apenas)
-            case "addi":
-            case "andi":
-            case "ori":
-            case "xori":
+            // Tipo I aritmético/lógico: addi/andi/ori/xori  $rt, $rs, imm
+            //                           tokens:               [1]  [2]  [3]
+            // Fonte: $rs (tokens[2]); $rt (tokens[1]) é o DESTINO
+            case "addi": case "andi": case "ori": case "xori":
                 if (tokens.length > 2) resultado.add(tokens[2]);
                 break;
 
+            // lui  $rt, imm  — carrega imediato, sem registrador fonte
             case "lui":
-                // lui $rt, imm: sem registrador fonte
                 break;
 
-            // Load: lw/lb/lh $rt, offset($rs)
-            // Após limpar: tokens[0]=op, tokens[1]=$rt(dest), tokens[2]=offset, tokens[3]=$rs(fonte)
-            // Fonte: apenas o registrador base tokens[3]
-            case "lw":
-            case "lb":
-            case "lh":
+            // Load: lw/lb/lh  $rt,  offset($rs)
+            //       tokens:    [1]   [2]    [3]
+            // Fonte: apenas $rs (tokens[3]); $rt (tokens[1]) é o DESTINO
+            case "lw": case "lb": case "lh":
                 if (tokens.length > 3) resultado.add(tokens[3]);
                 break;
 
-            // Store: sw/sb/sh $rt, offset($rs)
-            // Após limpar: tokens[0]=op, tokens[1]=$rt(valor), tokens[2]=offset, tokens[3]=$rs(base)
-            // Fontes: tokens[1] (valor a guardar) e tokens[3] (endereço base)
-            // Não tem registrador de destino (escreve na memória)
-            case "sw":
-            case "sb":
-            case "sh":
+            // Store: sw/sb/sh  $rt,  offset($rs)
+            //        tokens:    [1]   [2]    [3]
+            // Fontes: $rt (tokens[1]) — valor a guardar
+            //         $rs (tokens[3]) — endereço base
+            // Store não tem registrador de destino (escreve na memória)
+            case "sw": case "sb": case "sh":
                 if (tokens.length > 1) resultado.add(tokens[1]);
                 if (tokens.length > 3) resultado.add(tokens[3]);
                 break;
 
-            // Branch: beq/bne $rs, $rt, offset -> fontes: tokens[1], tokens[2]
-            case "beq":
-            case "bne":
+            // Branch: beq/bne  $rs, $rt, offset
+            //         tokens:   [1]  [2]   [3]
+            // Fontes: $rs (tokens[1]) e $rt (tokens[2])
+            case "beq": case "bne":
                 if (tokens.length > 1) resultado.add(tokens[1]);
                 if (tokens.length > 2) resultado.add(tokens[2]);
                 break;
 
-            // Branch de 1 operando: blez/bgtz $rs, offset -> fonte: tokens[1]
-            case "blez":
-            case "bgtz":
+            // Branch 1 operando: blez/bgtz  $rs, offset
+            //                    tokens:     [1]   [2]
+            // Fonte: $rs (tokens[1])
+            case "blez": case "bgtz":
                 if (tokens.length > 1) resultado.add(tokens[1]);
                 break;
 
-            // Jump register: jr $rs -> fonte: tokens[1]
+            // Jump register: jr  $rs
+            //                tokens: [1]
+            // Fonte: $rs (tokens[1])
             case "jr":
                 if (tokens.length > 1) resultado.add(tokens[1]);
                 break;
 
-            // Jump direto: j instr_index -> sem registradores
+            // Jump direto: j  instr_index — sem registradores
             case "j":
                 break;
 
@@ -158,9 +159,16 @@ public class Main {
         return resultado;
     }
 
+    // ---------------------------------------------------------------
+    // Verifica se duas instruções consecutivas geram load-use hazard.
+    // Com adiantamento, este é o único conflito que ainda exige 1 bolha:
+    // ocorre quando um load (lw/lb/lh) é seguido imediatamente por uma
+    // instrução que LÊ o registrador carregado.
+    // Retorna 1 se houver hazard, 0 caso contrário.
+    
     public static int bolhas(String atual, String proxima) {
 
-        atual = limpar(atual);
+        atual   = limpar(atual);
         proxima = limpar(proxima);
 
         String[] a = atual.split("\\s+");
@@ -168,23 +176,16 @@ public class Main {
 
         if (a.length == 0 || b.length == 0) return 0;
 
-        String op = a[0].toLowerCase();
+        String opAtual = a[0].toLowerCase();
 
-        // Load-use hazard: ocorre quando um load (lw/lb/lh) é seguido
-        // IMEDIATAMENTE por uma instrução que lê o registrador carregado.
-        // Com adiantamento de dados, este é o ÚNICO hazard que ainda exige 1 bolha.
-        if (op.equals("lw") || op.equals("lb") || op.equals("lh")) {
-
-            // Registrador de destino do load: tokens[1]
-            if (a.length < 2) return 0;
-            String destino = a[1];
-
-            // Verifica se o destino do load aparece como FONTE da instrução seguinte
-            List<String> fontesDaProxima = fontes(b);
-
-            for (String fonte : fontesDaProxima) {
-                if (fonte.equals(destino)) {
-                    return 1;
+        // Load-use hazard: load seguido imediatamente de instrução que lê o destino
+        if (opAtual.equals("lw") || opAtual.equals("lb") || opAtual.equals("lh")) {
+            if (a.length >= 2) {
+                String destino = a[1];
+                for (String fonte : fontes(b)) {
+                    if (fonte.equals(destino)) {
+                        return 1;
+                    }
                 }
             }
         }
@@ -192,15 +193,14 @@ public class Main {
         return 0;
     }
 
+    // ---------------------------------------------------------------
+    // Remove vírgulas e parênteses da instrução e normaliza espaços,
+   
     public static String limpar(String linha) {
-
         linha = linha.replace(",", " ");
         linha = linha.replace("(", " ");
         linha = linha.replace(")", " ");
-
-        // Normaliza múltiplos espaços/tabulações em um único espaço
         linha = linha.trim().replaceAll("\\s+", " ");
-
         return linha;
     }
 }
