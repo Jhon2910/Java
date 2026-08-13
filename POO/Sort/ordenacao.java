@@ -19,11 +19,11 @@ public class Main {
         System.out.println("Comb Sort: " + Arrays.toString(v3));
     }
 
-    // Tornou-se 'static' para permitir métodos estáticos e acesso direto
+   
     static class Ordenacao { 
 
         public static void bubblesort(int[] v) {
-            // Ciclo corrigido para ordenar todo o vetor
+           
             for (int i = 0; i < v.length - 1; i++) { 
                 for (int j = 0; j < v.length - i - 1; j++) {
                     if (v[j] > v[j + 1]) {
@@ -38,13 +38,13 @@ public class Main {
         public static void cocktailshakersort(int[] v) {
             boolean trocou = true;
             int primeiro = 0;
-            int ultimo = v.length - 1; // Ajustado para o último índice válido
+            int ultimo = v.length - 1; 
 
             while (trocou) {
                 trocou = false;
 
-                // Passagem da esquerda para a direita
-                for (int i = primeiro; i < ultimo; i++) { // Limite corrigido
+                
+                for (int i = primeiro; i < ultimo; i++) {
                     if (v[i] > v[i + 1]) {
                         int temp = v[i];
                         v[i] = v[i + 1];
@@ -58,7 +58,7 @@ public class Main {
                 trocou = false;
                 ultimo--;
 
-                // Passagem da direita para a esquerda
+               
                 for (int i = ultimo - 1; i >= primeiro; i--) {
                     if (v[i] > v[i + 1]) {
                         int temp = v[i];
@@ -75,9 +75,8 @@ public class Main {
             int gap = v.length;
             boolean trocou = true;
 
-            // Ciclo corrigido para atualizar o gap dinamicamente
+            
             while (gap > 1 || trocou) {
-                // Fator de encolhimento padrão do Comb Sort (1.3)
                 gap = (int)(gap / 1.3);
                 if (gap < 1) {
                     gap = 1;
