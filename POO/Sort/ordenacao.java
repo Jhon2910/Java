@@ -2,7 +2,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        // Vetores de teste para cada algoritmo
+    
         int[] v1 = {3, 2, 56, 32, 10};
         int[] v2 = {3, 2, 56, 32, 10};
         int[] v3 = {3, 2, 56, 32, 10};
