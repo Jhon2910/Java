@@ -4,8 +4,8 @@ public class Main {
         int v[] = {5, 2, 4, 6, 1, 3};
 
         for (int i = 1; i < v.length; i++) {
-            int carta = v[i];//2
-            int aux = i - 1;//0
+            int carta = v[i];
+            int aux = i - 1;
 
             while (aux >= 0 && v[aux] > carta) {
                 v[aux + 1] = v[aux];
