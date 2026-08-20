@@ -107,20 +107,18 @@ public class Main {
         }
 
         public static void SelectionSort(int[] v) {
-            int indiceMenor = 0;
-            for (int i = 1; i < v.length; i++) {
-                for (int j = 0; j < v.length - 1; j++) {
-                    if (v[indiceMenor] > v[j]) {
-                        if (v[j] < v[j + 1]) {
-                            indiceMenor = j;
-                        }
-                        int aux = v[indiceMenor];
-                        v[indiceMenor] = v[i - 1];
-                        v[i - 1] = aux;
+            for (int i = 0; i < v.length - 1; i++) {
+                int indiceMenor = i;
+                for (int j = i + 1; j < v.length; j++) {
+                    if (v[j] < v[indiceMenor]) {
+                        indiceMenor = j;
                     }
-
                 }
+                int aux = v[indiceMenor];
+                v[indiceMenor] = v[i];
+                v[i] = aux;
             }
         }
+
     }
 }
