@@ -101,10 +101,6 @@ public class Main {
                 }
                 v[aux + 1] = carta;
             }
-
-            for (int i = 0; i <= v.length - 1; i++) {
-                System.out.print(" " + v[i] + " ");
-            }
         }
     }
 }
