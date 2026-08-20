@@ -19,6 +19,9 @@ public class Main {
         Ordenacao.InsertionSort(v);
         System.out.println("Insertion Sort: " + Arrays.toString(v));
 
+        Ordenacao.SelectionSort(v);
+        System.out.println("Selection Sort: " + Arrays.toString(v));
+
     }
 
     static class Ordenacao {
@@ -101,6 +104,24 @@ public class Main {
                 }
                 v[aux + 1] = carta;
             }
+        }
+
+        public static void SelectionSort(int[] v) {
+            int indiceMenor = 0;
+            for (int i = 1; i < v.length; i++) {
+                for (int j = 0; j < v.length - 1; j++) {
+                    if (v[j] < v[j + 1]) {
+                        indiceMenor = j;
+                    }
+
+                    if (v[indiceMenor] < v[j]){
+
+                    }
+                }
+            }
+            int aux = v[indiceMenor];
+            v[indiceMenor] = v[i - 1];
+            v[i - 1] = aux;
         }
     }
 }
