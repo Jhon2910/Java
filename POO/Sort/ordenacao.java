@@ -110,18 +110,17 @@ public class Main {
             int indiceMenor = 0;
             for (int i = 1; i < v.length; i++) {
                 for (int j = 0; j < v.length - 1; j++) {
-                    if (v[j] < v[j + 1]) {
-                        indiceMenor = j;
+                    if (v[indiceMenor] > v[j]) {
+                        if (v[j] < v[j + 1]) {
+                            indiceMenor = j;
+                        }
+                        int aux = v[indiceMenor];
+                        v[indiceMenor] = v[i - 1];
+                        v[i - 1] = aux;
                     }
 
-                    if (v[indiceMenor] < v[j]){
-
-                    }
                 }
             }
-            int aux = v[indiceMenor];
-            v[indiceMenor] = v[i - 1];
-            v[i - 1] = aux;
         }
     }
 }
