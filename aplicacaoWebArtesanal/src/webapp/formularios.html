@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulários Web</title>
+</head>
+<body>
+    <h1>Exemplos de Formulários</h1>
+
+    <hr>
+    <!-- ======================================================== -->
+    <!-- PARTE 1: FORMULÁRIOS COM MÉTODO GET                      -->
+    <!-- ======================================================== -->
+
+    <h2>1. Busca em Acervo de Livros (GET)</h2>
+    <form method="GET" action="/receptor">
+        <div>
+            <label for="livro">Título / Palavra-chave:</label><br>
+            <input type="text" id="livro" name="titulo" placeholder="Digite o título do livro">
+        </div>
+        <br>
+        <div>
+            <label for="genero">Gênero:</label><br>
+            <input type="text" id="genero" name="genero" placeholder="Ex: Romance, Ficção, Computação">
+        </div>
+        <br>
+        <button type="submit">Buscar Livro</button>
+    </form>
+
+    <hr>
+
+    <h2>2. Busca de Filmes e Séries (GET - Radio buttons)</h2>
+    <form method="GET" action="/receptor">
+        <div>
+            <label for="termo_filme">Termo de busca:</label><br>
+            <input type="text" id="termo_filme" name="termo" placeholder="Digite o nome do filme ou série">
+        </div>
+        <br>
+        <div>
+            <span>Categoria:</span><br>
+            <input type="radio" id="filme" name="categoria" value="filme" checked>
+            <label for="filme">Filme</label>
+
+            <input type="radio" id="serie" name="categoria" value="serie">
+            <label for="serie">Série</label>
+        </div>
+        <br>
+        <button type="submit">Buscar Filme/Série</button>
+    </form>
+
+    <hr>
+
+    <h2>3. Busca de Arquivos em Nuvem (GET - Checkboxes)</h2>
+    <form method="GET" action="/receptor">
+        <div>
+            <label for="termo_nuvem">Nome do arquivo:</label><br>
+            <input type="text" id="termo_nuvem" name="arquivo" placeholder="Digite o nome do arquivo">
+        </div>
+        <br>
+        <div>
+            <span>Filtrar por:</span><br>
+            <input type="checkbox" id="docs" name="filtro" value="documentos">
+            <label for="docs">Documentos</label><br>
+
+            <input type="checkbox" id="pastas" name="filtro" value="pastas">
+            <label for="pastas">Pastas</label><br>
+
+            <input type="checkbox" id="midia" name="filtro" value="midia">
+            <label for="midia">Mídia</label>
+        </div>
+        <br>
+        <button type="submit">Buscar Arquivo</button>
+    </form>
+
+    <hr>
+    <!-- ======================================================== -->
+    <!-- PARTE 2: FORMULÁRIOS COM MÉTODO POST                     -->
+    <!-- ======================================================== -->
+
+    <!-- (a) Cadastro de Cliente em Academia -->
+    <h2>(a) Cadastro de Cliente - Academia (POST)</h2>
+    <form method="POST" action="/receptor">
+        <div>
+            <label for="cad_nome">Nome Completo:</label><br>
+            <input type="text" id="cad_nome" name="nome" placeholder="Digite seu nome completo" required>
+        </div>
+        <br>
+        <div>
+            <label for="cad_endereco">Endereço:</label><br>
+            <input type="text" id="cad_endereco" name="endereco" placeholder="Rua, número, bairro">
+        </div>
+        <br>
+        <div>
+            <label for="cad_email">Email:</label><br>
+            <input type="email" id="cad_email" name="email" placeholder="exemplo@email.com">
+        </div>
+        <br>
+        <div>
+            <label for="cad_telefone">Telefone:</label><br>
+            <input type="tel" id="cad_telefone" name="telefone" placeholder="(11) 99999-9999">
+        </div>
+        <br>
+        <button type="submit">Cadastrar Cliente</button>
+    </form>
+
+    <hr>
+
+    <!-- (b) Entrada no Estoque -->
+    <h2>(b) Entrada no Estoque (POST)</h2>
+    <form method="POST" action="/receptor">
+        <div>
+            <label for="est_codigo">Código do Produto:</label><br>
+            <input type="text" id="est_codigo" name="codigo_produto" placeholder="Ex: PROD-1020" required>
+        </div>
+        <br>
+        <div>
+            <label for="est_qtd">Quantidade Abastecida:</label><br>
+            <input type="number" id="est_qtd" name="quantidade" min="1" placeholder="Ex: 50" required>
+        </div>
+        <br>
+        <div>
+            <label for="est_data">Data de Abastecimento:</label><br>
+            <input type="date" id="est_data" name="data_abastecimento" required>
+        </div>
+        <br>
+        <button type="submit">Dar Entrada no Estoque</button>
+    </form>
+
+    <hr>
+
+    <!-- (c) Carrinho de Compras com Remoção -->
+    <h2>(c) Carrinho de Compras (POST)</h2>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Produto</th>
+                <th>Preço</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>PROD-001</td>
+                <td>Notebook Gamer</td>
+                <td>R$ 4.500,00</td>
+                <td>
+                    <form method="POST" action="/receptor">
+                        <input type="hidden" name="codigo" value="PROD-001">
+                        <button type="submit">Remover</button>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>PROD-002</td>
+                <td>Mouse Sem Fio</td>
+                <td>R$ 120,00</td>
+                <td>
+                    <form method="POST" action="/receptor">
+                        <input type="hidden" name="codigo" value="PROD-002">
+                        <button type="submit">Remover</button>
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td>PROD-003</td>
+                <td>Teclado Mecânico</td>
+                <td>R$ 350,00</td>
+                <td>
+                    <form method="POST" action="/receptor">
+                        <input type="hidden" name="codigo" value="PROD-003">
+                        <button type="submit">Remover</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
