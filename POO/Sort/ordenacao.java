@@ -7,7 +7,7 @@ public class Main {
 
         System.out.println("Vetor original: [3, 2, 56, 32, 10]\n");
 
-        Ordenacao.bubblesort(v);
+       /* Ordenacao.bubblesort(v);
         System.out.println("Bubble Sort: " + Arrays.toString(v));
 
         Ordenacao.cocktailshakersort(v);
@@ -22,10 +22,12 @@ public class Main {
         Ordenacao.SelectionSort(v);
         System.out.println("Selection Sort: " + Arrays.toString(v));
 
+        Ordenacao.MergeSort(v);
+        System.out.println("Merge Sort; " + Arrays.toString(v));
     }
+    */
 
-    static class Ordenacao {
-
+    class Ordenacao {/*
         public static void bubblesort(int[] v) {
             for (int i = 0; i < v.length - 1; i++) {
                 for (int j = 0; j < v.length - i - 1; j++) {
@@ -118,7 +120,42 @@ public class Main {
                 v[indiceMenor] = v[i];
                 v[i] = aux;
             }
-        }
 
+        }
+*/
+        public static void MergeSort(int[] v) {
+
+            int meio = v.length / 2;
+            int[] e = new int[meio];
+            int[] d = new int[v.length - meio];
+
+            for (int i = 0; i < meio; i++) {
+                e[i] = v[i];
+            }
+
+            for (int i = meio; i < v.length; i++) {
+                d[i - meio] = v[i];
+            }
+
+            int i = 0;
+            int k = 0;
+            int j = 0;
+
+            while (i < e.length && j < d.length) {
+                if (e[i] <= d[j]) {
+                    v[k++] = e[i++];
+                }
+                else {
+                    v[k++] = d[j++];
+                }
+            }
+            while (i < e.length) {
+                v[k++] = e[i++];
+            }
+            while (j < d.length) {
+                v[k++] = d[j++];
+            }
+
+        }
     }
-}
+}}
