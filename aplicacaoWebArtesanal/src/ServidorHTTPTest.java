@@ -11,7 +11,6 @@ public class ServidorHTTPTest {
         System.out.println("\n>>> TODOS OS TESTES PASSARAM COM SUCESSO! <<<");
     }
 
-    // Teste unitário para lerRequisicao com método POST e Content-Length
     public static void testLerRequisicaoPOSTComCorpo() {
         System.out.println("Executando: testLerRequisicaoPOSTComCorpo...");
 
@@ -46,7 +45,6 @@ public class ServidorHTTPTest {
         }
     }
 
-    // Teste unitário para verificar extração de parâmetros no Receptor
     public static void testReceptorComPOST() {
         System.out.println("\nExecutando: testReceptorComPOST...");
 

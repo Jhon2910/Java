@@ -10,7 +10,6 @@ public class Receptor extends Pagina {
         this.req = req;
     }
 
-    // Extrai os parâmetros da query string (GET)
     protected Map<String, String> getParametrosQuery() {
         if (req == null || req.getURL() == null) {
             return new LinkedHashMap<>();
@@ -27,7 +26,6 @@ public class Receptor extends Pagina {
         return new LinkedHashMap<>();
     }
 
-    // Extrai os parâmetros do corpo da requisição (POST)
     public Map<String, String> getParametrosPOST() {
         if (req == null || req.getCorpo() == null || req.getCorpo().isEmpty()) {
             return new LinkedHashMap<>();

@@ -11,13 +11,11 @@ public class Requisicao {
             return;
         }
 
-        // Separa os cabeçalhos do corpo pelo "\r\n\r\n"
         String[] partes = documentoBruto.split("\r\n\r\n", 2);
         if (partes.length > 1) {
             this.corpo = partes[1];
         }
 
-        // A primeira linha contém: METODO URL PROTOCOLO
         String cabecalhos = partes[0];
         String[] linhas = cabecalhos.split("\r\n");
         if (linhas.length > 0) {

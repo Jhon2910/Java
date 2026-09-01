@@ -10,14 +10,12 @@ import java.nio.charset.StandardCharsets;
 
 public class ServidorHTTP {
 
-    // Método que lê a requisição do fluxo de entrada (suportando GET e POST com Content-Length)
     protected Requisicao lerRequisicao(InputStream in) throws IOException {
         BufferedReader leitorLinhas = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
         StringBuilder sb = new StringBuilder();
         String linha;
         int contentLength = 0;
 
-        // Lê a linha de requisição e os cabeçalhos até a linha em branco
         while ((linha = leitorLinhas.readLine()) != null && !linha.isBlank()) {
             sb.append(linha).append("\r\n");
 
@@ -30,10 +28,8 @@ public class ServidorHTTP {
             }
         }
 
-        // Adiciona a linha em branco que separa os cabeçalhos do corpo
         sb.append("\r\n");
 
-        // Se houver corpo informado pelo Content-Length, lê exatamente os bytes do corpo
         if (contentLength > 0) {
             char[] buffer = new char[contentLength];
             int lidos = 0;
@@ -48,7 +44,6 @@ public class ServidorHTTP {
         return new Requisicao(sb.toString());
     }
 
-    // Retorna o objeto Pagina adequado para a URL da requisição
     protected Pagina getPagina(Requisicao req) {
         if (req == null || req.getURL() == null) {
             return null;
@@ -56,27 +51,22 @@ public class ServidorHTTP {
 
         String url = req.getURL();
 
-        // Rota padrão "/"
         if ("/".equals(url)) {
             url = "/index.html";
         }
 
-        // Se a requisição for para /receptor, delega para Receptor
         if (url.startsWith("/receptor")) {
             return new Receptor(req);
         }
 
-        // Busca o arquivo correspondente
         PaginaDoArquivo pagina = new PaginaDoArquivo(url);
         if (pagina.getHtml() != null) {
             return pagina;
         }
 
-        // Retorna null para páginas que não existem (gerando o 404)
         return null;
     }
 
-    // Cria o documento de resposta HTTP a partir do objeto Pagina
     protected Resposta criarResposta(Pagina pagina) {
         Resposta res = new Resposta();
 
@@ -91,13 +81,11 @@ public class ServidorHTTP {
         return res;
     }
 
-    // Envia o documento de resposta para o fluxo de saída do socket
     protected void enviarResposta(Resposta res, OutputStream out) throws IOException {
         PrintWriter writer = new PrintWriter(out, true);
         writer.print(res.getDocumentoBruto());
     }
 
-    // Método principal que inicia o servidor na porta especificada
     public void iniciar(int porta) {
         try (ServerSocket serverSocket = new ServerSocket(porta)) {
             System.out.println("Servidor ouvindo na porta " + porta);
