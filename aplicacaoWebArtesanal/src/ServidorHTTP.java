@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,18 +29,24 @@ public class ServidorHTTP {
             }
         }
 
-        sb.append("\r\n");
-
-        if (contentLength > 0) {
-            char[] buffer = new char[contentLength];
-            int lidos = 0;
-            while (lidos < contentLength) {
-                int r = leitorLinhas.read(buffer, lidos, contentLength - lidos);
-                if (r == -1) break;
-                lidos += r;
-            }
-            sb.append(buffer, 0, lidos);
+        String documentoCabecalhos = sb.toString();
+        if (documentoCabecalhos.isEmpty()) {
+            return null;
         }
+
+        if (documentoCabecalhos.startsWith("GET") || contentLength == 0) {
+            return new Requisicao(documentoCabecalhos);
+        }
+
+        sb.append("\r\n");
+        char[] buffer = new char[contentLength];
+        int lidos = 0;
+        while (lidos < contentLength) {
+            int r = leitorLinhas.read(buffer, lidos, contentLength - lidos);
+            if (r == -1) break;
+            lidos += r;
+        }
+        sb.append(buffer, 0, lidos);
 
         return new Requisicao(sb.toString());
     }
@@ -82,15 +89,15 @@ public class ServidorHTTP {
     }
 
     protected void enviarResposta(Resposta res, OutputStream out) throws IOException {
-        PrintWriter writer = new PrintWriter(out, true);
+        PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8), true);
         writer.print(res.getDocumentoBruto());
+        writer.flush();
     }
 
     public void iniciar(int porta) {
         try (ServerSocket serverSocket = new ServerSocket(porta)) {
             System.out.println("Servidor ouvindo na porta " + porta);
-            System.out.printf("Acesse esta aplicação pelo endereço %s:%d\n",
-                    "http://localhost", porta);
+            System.out.printf("Acesse esta aplicação pelo endereço %s:%d\n", "http://localhost", porta);
             System.out.println("Para parar o servidor, aperte Ctrl-C.");
 
             while (true) {
@@ -102,10 +109,13 @@ public class ServidorHTTP {
                     Pagina pag = getPagina(req);
                     Resposta res = criarResposta(pag);
                     enviarResposta(res, out);
+
+                } catch (IOException e) {
+                    System.err.println("Erro no processamento da requisição: " + e.getMessage());
                 }
             }
         } catch (IOException e) {
-            System.err.println("Ocorreu um erro: " + e.getMessage());
+            System.err.println("Ocorreu um erro no ServerSocket: " + e.getMessage());
         }
     }
 }
