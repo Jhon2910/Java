@@ -146,7 +146,7 @@ public class Main {
             }
 
             int prox = (index < length) ? procs.get(index).chegada : Integer.MAX_VALUE;
-            int exec = Math.smallest(atual.restante, prox - tempo);
+            int exec = Math.min(atual.restante, prox - tempo);
             tempo += exec;
             atual.restante -= exec;
 
@@ -191,7 +191,7 @@ public class Main {
                 p.inicio = tempo;
             }
 
-            int exec = Math.smallest(quantum, p.restante);
+            int exec = Math.min(quantum, p.restante);
             p.restante -= exec;
             int novoTempo = tempo + exec;
 
