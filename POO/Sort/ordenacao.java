@@ -2,10 +2,10 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        int[] v = {3, 2, 56, 32, 10};
+        int[] v = {3, 2, 56, 32, 10, -5 , 73};
 
 
-        System.out.println("Vetor original: [3, 2, 56, 32, 10]\n");
+        System.out.println("Vetor original: [3, 2, 56, 32, 10, -5, 73]\n");
 
        /* Ordenacao.bubblesort(v);
         System.out.println("Bubble Sort: " + Arrays.toString(v));
@@ -21,13 +21,14 @@ public class Main {
 
         Ordenacao.SelectionSort(v);
         System.out.println("Selection Sort: " + Arrays.toString(v));
-
+*/
         Ordenacao.MergeSort(v);
-        System.out.println("Merge Sort; " + Arrays.toString(v));
-    }
-    */
+        System.out.println("\nMerge Sort; " + Arrays.toString(v));
 
-    class Ordenacao {/*
+    }
+
+
+        class Ordenacao { /*
         public static void bubblesort(int[] v) {
             for (int i = 0; i < v.length - 1; i++) {
                 for (int j = 0; j < v.length - i - 1; j++) {
@@ -123,39 +124,49 @@ public class Main {
 
         }
 */
-        public static void MergeSort(int[] v) {
+            public static void MergeSort(int[] v) {
 
-            int meio = v.length / 2;
-            int[] e = new int[meio];
-            int[] d = new int[v.length - meio];
+                int meio = v.length / 2;
+                int[] esq = new int[meio];
+                int[] dir = new int[v.length - meio];
 
-            for (int i = 0; i < meio; i++) {
-                e[i] = v[i];
-            }
-
-            for (int i = meio; i < v.length; i++) {
-                d[i - meio] = v[i];
-            }
-
-            int i = 0;
-            int k = 0;
-            int j = 0;
-
-            while (i < e.length && j < d.length) {
-                if (e[i] <= d[j]) {
-                    v[k++] = e[i++];
+                for (int i = 0; i < meio; i++) {
+                    esq[i] = v[i];
                 }
-                else {
-                    v[k++] = d[j++];
-                }
-            }
-            while (i < e.length) {
-                v[k++] = e[i++];
-            }
-            while (j < d.length) {
-                v[k++] = d[j++];
-            }
 
+                for (int i = meio; i <v.length - meio; i++) {
+                    dir[i - meio] = v[i];
+                }
+
+                for (int i = 0; i < meio - 1; i++) {
+                    for (int j = 0; j < meio - i - 1; j++) {
+                        if (esq[j] > esq[j + 1]){
+                            int aux = esq[j];
+                            esq[j] = esq[j + 1];
+                            esq[j + 1] = aux;
+                        }
+                    }
+                }
+
+                for (int i = 0; i <  v.length - meio - 1; i++) {
+                    for (int j = v.length - meio; j <  v.length - meio - i - 1; j++) {
+                        if (dir[j] > dir[j + 1]){
+                            int aux = dir[j];
+                            dir[j] = dir[j + 1];
+                            dir[j + 1] = aux;
+                        }
+                    }
+                }
+
+
+
+                int i = 0;
+                int k = 0;
+                int j = 0;
+
+                System.out.print("Dir = " + Arrays.toString(dir));
+                System.out.print("\nEsq = " + Arrays.toString(esq));
+
+            }
         }
     }
-}}
