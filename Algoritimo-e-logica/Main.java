@@ -12,7 +12,6 @@ public class Main {
 
     static class Processo {
         int id, chegada, duracao, restante, inicio = -1, fim = -1;
-
         Processo(int id, int c, int d) {
             this.id = id;
             this.chegada = c;
@@ -20,10 +19,8 @@ public class Main {
             this.restante = d;
         }
     }
-
     public static void main(String[] args) throws Exception {
         File dir = args.length > 0 ? new File(args[0]) : new File(".");
-
         for (int index = 1; index <= 10; index++) {
             File arq = new File(dir, String.format("TESTE-%02d.txt", index));
             if (!arq.exists()) {
@@ -32,6 +29,7 @@ public class Main {
             if (!arq.exists()) {
                 continue;
             }
+
 
             Scanner sc = new Scanner(arq);
             if (!sc.hasNextInt()) {
@@ -98,8 +96,7 @@ public class Main {
 
     static String sjf(List<Processo> procs) {
         reset(procs);
-        PriorityQueue<Processo> fila = new PriorityQueue<>(
-                (a, b) -> a.duracao != b.duracao ? a.duracao - b.duracao : a.chegada - b.chegada);
+        PriorityQueue<Processo> fila = new PriorityQueue<>((a, b) -> a.duracao != b.duracao ? a.duracao - b.duracao : a.chegada - b.chegada);
         int tempo = 0, index = 0, length = procs.size(), concluidos = 0;
 
         while (concluidos < length) {
@@ -112,6 +109,7 @@ public class Main {
                     fila.add(procs.get(index++));
                 }
             }
+
             Processo p = fila.poll();
             p.inicio = tempo;
             tempo += p.duracao;
@@ -123,8 +121,8 @@ public class Main {
 
     static String srt(List<Processo> procs) {
         reset(procs);
-        PriorityQueue<Processo> fila = new PriorityQueue<>(
-                (a, b) -> a.restante != b.restante ? a.restante - b.restante : a.chegada - b.chegada);
+
+        PriorityQueue<Processo> fila = new PriorityQueue<>((a, b) -> a.restante != b.restante ? a.restante - b.restante : a.chegada - b.chegada);
         int tempo = 0, index = 0, length = procs.size(), concluidos = 0;
         Processo atual = null;
 
@@ -132,6 +130,7 @@ public class Main {
             while (index < length && procs.get(index).chegada <= tempo) {
                 fila.add(procs.get(index++));
             }
+
             if (atual == null) {
                 if (fila.isEmpty()) {
                     tempo = procs.get(index).chegada;
@@ -190,11 +189,9 @@ public class Main {
             if (p.inicio == -1) {
                 p.inicio = tempo;
             }
-
             int exec = Math.min(quantum, p.restante);
             p.restante -= exec;
             int novoTempo = tempo + exec;
-
             while (index < length && procs.get(index).chegada < novoTempo) {
                 fila.add(procs.get(index++));
             }
