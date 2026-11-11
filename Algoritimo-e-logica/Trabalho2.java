@@ -3,7 +3,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
-public class SimuladorMemoria {
+public class Trabalho2{
 
     // Guarda os dados de cada acesso à memória
     static class Referencia {
