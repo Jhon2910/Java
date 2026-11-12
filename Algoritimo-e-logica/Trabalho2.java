@@ -101,14 +101,10 @@ public class Trabalho2{
 
                 for (int j = 0; j < m; j++) {
 
-                    Queue<Integer> fila =
-                        proximosUsos.get(memoria[j]);
+                    Queue<Integer> fila = proximosUsos.get(memoria[j]);
 
                     // Se não houver uso futuro, considera infinito
-                    int proximoUso =
-                        (fila == null || fila.isEmpty())
-                        ? Integer.MAX_VALUE
-                        : fila.peek();
+                    int proximoUso = (fila == null || fila.isEmpty()) ? Integer.MAX_VALUE : fila.peek();
 
                     // Escolhe a página com uso mais distante
                     if (proximoUso > maiorDistancia) {
@@ -130,8 +126,7 @@ public class Trabalho2{
     // 2. ALGORITMO NRU
     // ==================================================
 
-    static int executarNRU(int m, long ciclo,
-                           List<Referencia> lista) {
+    static int executarNRU(int m, long ciclo, List<Referencia> lista) {
 
         long[] memoria = criarMemoria(m);
 
@@ -158,7 +153,7 @@ public class Trabalho2{
 
             int pos = buscar(memoria, ref.pagina);
 
-            // Verifica se a página já está na memória
+            // Verifica se a página já está na memória (pos = posicao)
             if (pos != -1) {
 
                 // Marca a página como utilizada
@@ -181,14 +176,17 @@ public class Trabalho2{
             for (int j = 0; j < m; j++) {
 
                 if (memoria[j] == -1) {
+                    // recebe a posição que será modficada, ainda não modifica.
                     vitima = j;
                     break;
                 }
             }
 
             // Se não houver espaço vazio, escolhe pela classe NRU
+            // Se o for anterior nao encontrou uma vitima vazia.
             if (vitima == -1) {
 
+                //classe 3 (r 1,m 1)
                 int menorClasse = 4;
 
                 for (int j = 0; j < m; j++) {
@@ -196,15 +194,23 @@ public class Trabalho2{
                     int classe;
 
                     // Calcula a classe da página
+                    
+                    //classe 0 (r 0,m 0)
                     if (!r[j] && !mod[j]) {
                         classe = 0;
                     }
+
+                    //classe 0 (r 0,m 1)
                     else if (!r[j] && mod[j]) {
                         classe = 1;
                     }
+
+                    //classe 0 (r 1,m 0)
                     else if (r[j] && !mod[j]) {
                         classe = 2;
                     }
+
+                    //classe 0 (r 1,m 1)
                     else {
                         classe = 3;
                     }
@@ -291,8 +297,7 @@ public class Trabalho2{
     // 4. ALGORITMO WSCLOCK
     // ==================================================
 
-    static int executarWSClock(int m, long tau,
-                               List<Referencia> lista) {
+    static int executarWSClock(int m, long tau, List<Referencia> lista) {
 
         long[] memoria = criarMemoria(m);
 
@@ -333,6 +338,7 @@ public class Trabalho2{
             // Ocorreu uma falta de página
             faltas++;
 
+            // nao tem vitiima escoilhida
             int vitima = -1;
 
             // Primeiro procura uma moldura vazia
@@ -515,10 +521,7 @@ public class Trabalho2{
                 int quantidadeReferencias = (dados.length - 3) / 3;
 
                 // Não é necessário ter mais molduras do que referências
-                int m = (int) Math.min(
-                    mLido,
-                    Math.max(1, quantidadeReferencias)
-                );
+                int m = (int) Math.min(mLido, Math.max(1, quantidadeReferencias));
 
                 // Lista que armazenará os acessos
                 List<Referencia> lista = new ArrayList<>();
@@ -532,22 +535,15 @@ public class Trabalho2{
 
                     // Verifica se o tipo possui apenas um caractere
                     if (dados[j + 2].length() != 1) {
-                        throw new IllegalArgumentException(
-                            "Tipo de acesso inválido."
-                        );
+                        throw new IllegalArgumentException("Tipo de acesso inválido.");
                     }
 
                     char tipo = dados[j + 2].charAt(0);
 
                     // Verifica os dados do acesso
                     // Não verifica pagina >= totalPaginas
-                    if (pagina < 0 ||
-                        tempo < 0 ||
-                        (tipo != 'R' && tipo != 'W')) {
-
-                        throw new IllegalArgumentException(
-                            "Acesso inválido."
-                        );
+                    if (pagina < 0 || tempo < 0 || (tipo != 'R' && tipo != 'W')) {
+                        throw new IllegalArgumentException("Acesso inválido.");
                     }
 
                     // Adiciona o acesso à lista
@@ -565,19 +561,13 @@ public class Trabalho2{
                 int wsclock = executarWSClock(m, ciclo, lista);
 
                 // Organiza os resultados na ordem solicitada
-                String resultado =
-                    otimo + "\n" +
-                    nru + "\n" +
-                    relogio + "\n" +
-                    wsclock + "\n";
+                String resultado = otimo + "\n" + nru + "\n" + relogio + "\n" + wsclock + "\n";
 
                 // Grava o arquivo de resultado na mesma pasta
                 Files.writeString(arquivoSaida, resultado);
 
                 // Mostra os resultados no terminal
-                System.out.println(
-                    "\nArquivo processado: " + nomeEntrada
-                );
+                System.out.println("\nArquivo processado: " + nomeEntrada);
 
                 System.out.println("Ótimo: " + otimo);
                 System.out.println("NRU: " + nru);
@@ -588,13 +578,8 @@ public class Trabalho2{
 
             catch (Exception e) {
 
-                System.out.println(
-                    "Erro ao processar " + nomeEntrada +
-                    ": " + e.getMessage()
-                );
+                System.out.println("Erro ao processar " + nomeEntrada + ": " + e.getMessage());
             }
         }
-
-        System.out.println("\nSimulação concluída!");
     }
 }
